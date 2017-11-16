@@ -9,6 +9,8 @@ The script is reading the exif-data and tries to find the creation-date of the i
 
 If no exif-data is found the script tries to extract the filename in a similar way.
 
+If the filename is allready in the target-dir the script make sure that if the file is not the same, another name is used. If it is the same image nothing happens.
+
 ## Example ##
 ./imagepy.py <image>
   
