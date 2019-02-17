@@ -69,6 +69,7 @@ except NameError:
 
 existing=0
 do_move=1
+do_del=0
 
 if file and target and dir:
 
@@ -89,16 +90,14 @@ if file and target and dir:
         #-- if ImageModel, DateTime and Size are similar, we do not copy
         if str(tags['Image Model']) == str(tags_target['Image Model']) and str(os.path.getsize(file)) == str(os.path.getsize(target)) and str(tags['EXIF DateTimeOriginal']) == str(tags_target['EXIF DateTimeOriginal']):
             process = ("- Similar File - no copy happens - just remove - %s" % (target))
-            
+            do_del=1
             do_move=0
         #-- if it is not the same image, but the same name, we change the name
         else:
-            print("|%s|" % tags['Image Model']);
-            print("|%s|" % tags_target['Image Model']);
-            print("|%s|" % os.path.getsize(target))
-            print("|%s|" % os.path.getsize(file))
-            print("|%s|" % tags['EXIF DateTimeOriginal']);
-            print("|%s|" % tags_target['EXIF DateTimeOriginal']);
+            print("|%s|%s|" % (tags['Image Model'], tags_target['Image Model']))
+            print("|%s|%s|" % (os.path.getsize(file), os.path.getsize(target)))
+            print("|%s|%s|" % (
+                      tags['EXIF DateTimeOriginal'], tags_target['EXIF DateTimeOriginal']))
             i = 0
             n_target = target
             while os.path.isfile(n_target):
@@ -117,5 +116,7 @@ if file and target and dir:
             result = "- ERR->Image is still existing!"
         else:
             result = "- OK->%s" % target
+    elif do_del:
+        os.remove(file)
     
     print("%s => %s %s %s" % (file, typ, process, result))
