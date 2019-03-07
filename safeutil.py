@@ -127,8 +127,8 @@ def copyfile(src, dst):
             try:
                 src_fd = os.open(src, os.O_RDONLY)
                 dst_fd = os.open(dst,
-                                 os.O_WRONLY|os.O_EXCL|os.O_CREAT)
-                #os.O_WRONLY|os.O_EXCL|os.O_CREAT|os.O_EXLOCK)
+                                 os.O_WRONLY | os.O_EXCL | os.O_CREAT)
+                # os.O_WRONLY|os.O_EXCL|os.O_CREAT|os.O_EXLOCK)
 
                 # Read 100 bytes at a time, and copy them from src to dst
                 while True:
@@ -142,8 +142,8 @@ def copyfile(src, dst):
 
                 os.close(src_fd)
                 os.close(dst_fd)
-                
-		# If we get to this point, then the write has succeeded
+
+                # If we get to this point, then the write has succeeded
                 return dst
 
             # An OSError errno 17 is what happens if a file pops into existence
@@ -155,7 +155,7 @@ def copyfile(src, dst):
                 else:
                     print('Race condition: %s just popped into existence' % dst)
 
-            #finally:
+            # finally:
             #    os.close(src_fd)
             #    os.close(dst_fd)
 
