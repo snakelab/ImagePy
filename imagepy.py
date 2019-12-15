@@ -7,6 +7,7 @@ import time
 import re
 import argparse
 import shutil
+import re
 
 parser = argparse.ArgumentParser(description='Process some images.')
 parser.add_argument('-f', '--file', help='Image to work with?', required=True)
@@ -23,6 +24,7 @@ from safeutil import move, copyfile
 target_dir = "/Volumes/photo/photosync"
 
 file = args.file
+#file = re.escape(args.file)
 
 if str(os.path.basename(file)) == '.':
     sys.exit()
@@ -31,14 +33,19 @@ if str(os.path.basename(file)) == '..':
 if os.path.isdir(file):
     sys.exit()
 # Open image file for reading (binary mode)
+#f = open(re.escape(file), 'rb')
+print("===>%s" % file)
 f = open(file, 'rb')
 
 # Return Exif tags
 if file.lower().endswith(('.dng')):
     tags = None
 else:
-    tags = exifread.process_file(
-        f, stop_tag='DateTimeOriginal', details=False, strict=True)
+    try:
+        tags = exifread.process_file(
+            f, stop_tag='DateTimeOriginal', details=False, strict=True)
+    except ValueError:
+        print("==>ExifRead (Tags) Exception!")   
 # for tag in tags.keys():
 #    if tag not in ('JPEGThumbnail', 'TIFFThumbnail', 'Filename', 'EXIF MakerNote'):
 #        print("Key: %s, value %s" % (tag, tags[tag]))
@@ -70,7 +77,7 @@ try:
 
     target = "%s/%s" % (str(dir), filename)
 except NameError:
-    print("==>ExifRead Exception!")
+    print("==>ExifRead (NameError) Exception!")
 
 existing = 0
 do_move = 1

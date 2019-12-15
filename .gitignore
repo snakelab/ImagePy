@@ -1,3 +1,4 @@
+Pipfile*
 lib/
 bin/
 pyvenv.cfg
